@@ -13,6 +13,8 @@ inputEl.addEventListener('input', debounce(onSearchCountryInput, DEBOUNCE_DELAY)
 
 function onSearchCountryInput (event) {
   const valueInput = event.target.value.trim();
+  listEl.innerHTML = '';
+  infoEl.innerHTML = '';
 
   if (valueInput === '') {
     return (listEl.innerHTML = ''), (infoEl.innerHTML = '');
@@ -21,7 +23,9 @@ function onSearchCountryInput (event) {
   fetchCountries(valueInput)
     .then(makeCountry)
     .catch(err => {
-      Notiflix.Notify.failure('Oops, there is no country with that name');
+      if (err.message === 404) { Notiflix.Notify.failure('Oops, there is no country with that name')}
+      else {console.log(err)}
+     ;
     });
 };
 
@@ -60,3 +64,5 @@ function makeAllCountriesMurkup(countries) {
 
   return listCountries;
 };
+
+
